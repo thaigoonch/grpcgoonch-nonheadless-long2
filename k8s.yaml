@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: grpcgoonch-headless-long-deployment
+  name: grpcgoonch-nonheadless-long-deployment
   labels:
-    app: grpcgoonch-headless-long
+    app: grpcgoonch-nonheadless-long
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: grpcgoonch-headless-long
+      app: grpcgoonch-nonheadless-long
   template:
     metadata:
       labels:
-        app: grpcgoonch-headless-long
+        app: grpcgoonch-nonheadless-long
       annotations:
         prometheus.io/port: '9092'
         prometheus.io/scrape: 'true'
     spec:
       containers:
-      - name: grpcgoonch-headless-long
-        image: thaigoonch/grpcgoonch-headless-long:1.0
+      - name: grpcgoonch-nonheadless-long
+        image: thaigoonch/grpcgoonch-nonheadless-long:1.0
         ports:
         - name: serviceport
           containerPort: 9000
@@ -35,14 +35,13 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: grpcgoonch-headless-long-service
+  name: grpcgoonch-nonheadless-long-service
   labels:
-    app: grpcgoonch-headless-long
+    app: grpcgoonch-nonheadless-long
 spec:
   selector:
-    app: grpcgoonch-headless-long
+    app: grpcgoonch-nonheadless-long
   type: ClusterIP
-  clusterIP: None
   ports:
   - name: serviceport
     port: 80
@@ -53,14 +52,14 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: grpcgoonch-headless-long-servicemonitor
+  name: grpcgoonch-nonheadless-long-servicemonitor
   namespace: default
   labels:
-    app: grpcgoonch-headless-long
+    app: grpcgoonch-nonheadless-long
     release: prometheus
 spec:
   selector:
     matchLabels:
-      app: grpcgoonch-headless-long # target service
+      app: grpcgoonch-nonheadless-long # target service
   endpoints:
   - port: prometheusport
